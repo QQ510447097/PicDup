@@ -6,6 +6,15 @@ PicDup 是一个 **完全本地运行** 的 Windows 桌面工具，用来找出�
 
 ![扫描结果](docs/screenshots/results.png)
 
+## 下载
+
+Windows 版本发布在 [GitHub Releases](https://github.com/QQ510447097/PicDup/releases/latest)：
+
+- **便携版**：`PicDup-v1.0.0-win64.zip`，解压后直接运行 `PicDup.exe`，数据保存在 exe 同目录的 `PicDupData`。
+- **安装版**：`PicDup-v1.0.0-win64-setup.exe`，按当前用户安装到 `%LOCALAPPDATA%\Programs\PicDup`，创建开始菜单快捷方式，不需要管理员权限；卸载时保留 `PicDupData`。
+
+需要 Windows 10/11 和 WebView2 Runtime（Windows 11 自带）。安装包会检测 WebView2，缺失时给出下载入口。
+
 ## 功能
 
 - **扫描模块就地翻转**：开始扫描后主模块翻转为进度窗口，完成后可点「更换文件夹」翻回；右侧设置和上次扫描模块不受影响，切换页面再回来也会保留。
@@ -63,6 +72,14 @@ PicDup 是一个 **完全本地运行** 的 Windows 桌面工具，用来找出�
 ```
 
 产物：`bin\PicDup.exe`（无控制台窗口）。脚本会调用 `wails3 generate syso` 把 `build/windows/icon.ico`、应用清单和版本信息链接进 exe，然后使用 `-tags production -ldflags="-w -s -H windowsgui"` 构建。
+
+安装包使用 Inno Setup 6 编译：
+
+```powershell
+ISCC.exe installer\PicDup.iss
+```
+
+产物：`dist\PicDup-v1.0.0-win64-setup.exe`。
 
 其他模式：
 
@@ -138,6 +155,7 @@ go test ./...
 ├── internal/server/               # 本地 HTTP API
 ├── frontend/                      # 手工 HTML/CSS/JS，无打包步骤
 ├── build/                         # 应用图标、清单、版本信息
+├── installer/                     # Inno Setup 安装包脚本与中文语言文件
 ├── testdata/corpus/               # 程序生成的测试图（含重复/缩放/裁剪/调色变体）
 └── tools/                         # 测试语料生成、图标、CDP 验证脚本
 ```

@@ -12,6 +12,7 @@ testdata/*.log
 testdata/*.txt
 testdata/*.json
 testdata/crossvol/
+testdata/installer-*/
 
 # Go
 *.exe
