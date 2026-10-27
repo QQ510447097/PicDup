@@ -1,5 +1,7 @@
 # PicDup · 图片去重与清理
 
+> **开发说明：本项目全部由 AI 开发。**
+
 PicDup 是一个 **完全本地运行** 的 Windows 桌面工具，用来找出重复与相似的图片，并在确认后安全地清理它们。界面使用 Go + Wails 3 + 原生 HTML/CSS/JS 构建，不需要前端构建步骤。
 
 ![扫描结果](docs/screenshots/results.png)
@@ -188,6 +190,6 @@ PicDup 不包含任何网络请求代码，扫描、指纹计算、缩略图、�
 
 ## License
 
-PicDup 源码使用 [MIT License](LICENSE)，Copyright (c) 2026 陈闯。内置第三方组件遵循各自许可证，详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+PicDup 源码使用 [MIT License](LICENSE)，Copyright (c) 2026 孤独雪 (guduxue)。内置第三方组件遵循各自许可证，详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 `testdata/corpus` 中的图片由 `tools/gen_corpus.py` 和 `tools/gen_corpus_photos.py` 程序生成，仅用于测试。
