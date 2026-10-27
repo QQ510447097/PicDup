@@ -1,0 +1,32 @@
+# Build output
+bin/
+*.syso
+
+# Test data / generated artifacts
+testdata/appdata*/
+testdata/edge-profile/
+testdata/shots/
+testdata/icon-raw.png
+testdata/icon-preview-*.png
+testdata/*.log
+testdata/*.txt
+testdata/*.json
+testdata/crossvol/
+
+# Go
+*.exe
+*.test
+*.out
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Portable runtime data
+PicDupData/
+
+# Release packages
+dist/
+*.zip

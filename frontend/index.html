@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" type="image/png" href="/icon.png" />
+  <title>PicDup · 图片去重与清理</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true">
+    <defs>
+      <linearGradient id="logoGradient" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#a78bfa" />
+        <stop offset="0.55" stop-color="#7c3aed" />
+        <stop offset="1" stop-color="#22d3ee" />
+      </linearGradient>
+      <linearGradient id="logoGlow" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#c4b5fd" />
+        <stop offset="1" stop-color="#67e8f9" />
+      </linearGradient>
+    </defs>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+    <symbol id="i-folder-plus" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M12 10v6M9 13h6"/></symbol>
+    <symbol id="i-folder-open" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.9 2.9 11 6l3.1 1.1L11 8.2 9.9 11.3 8.8 8.2 5.7 7.1 8.8 6Z"/><path d="m18 5 .6 1.9L20.5 7.5l-1.9.6L18 10l-.6-1.9L15.5 7.5l1.9-.6Z"/><path d="m18 15 .6 1.9 1.9.6-1.9.6L18 20l-.6-1.9-1.9-.6 1.9-.6Z"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m2 12 8.6 3.9a2 2 0 0 0 1.66 0L22 12M2 17l8.6 3.9a2 2 0 0 0 1.66 0L22 17"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01Z"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></symbol>
+    <symbol id="i-hard-drive" viewBox="0 0 24 24"><path d="M22 12H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z"/><path d="M6 16h.01M10 16h.01"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="m3 3 18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.5 10.5 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.2M6.1 6.1A17.7 17.7 0 0 0 2 12s3.5 7 10 7a10.5 10.5 0 0 0 4.2-.9"/></symbol>
+    <symbol id="i-rotate-ccw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-broom" viewBox="0 0 24 24"><path d="m13 11 7 7M9 15l-5 5M14.5 4.5 19 9M4 20l4-9 5-5 5 5-5 5-9 4Z"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-sort" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M10 18h4"/></symbol>
+    <symbol id="i-wand" viewBox="0 0 24 24"><path d="m15 4 5 5M3 21l9-9M14 3l1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></symbol>
+    <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></symbol>
+  </svg>
+
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient-blob ambient-blob-a"></div>
+    <div class="ambient-blob ambient-blob-b"></div>
+    <div class="ambient-grid"></div>
+  </div>
+
+  <div id="boot" class="boot">
+    <div class="boot-mark">
+      <svg viewBox="0 0 96 96" aria-hidden="true">
+        <rect x="8" y="8" width="80" height="80" rx="24" fill="url(#logoGradient)" opacity=".16"/>
+        <path d="M28 34a6 6 0 0 1 6-6h22l6 7h8a6 6 0 0 1 6 6v21a6 6 0 0 1-6 6H34a6 6 0 0 1-6-6Z" fill="none" stroke="url(#logoGlow)" stroke-width="4"/>
+        <circle cx="58" cy="47" r="8" fill="none" stroke="url(#logoGlow)" stroke-width="4"/>
+        <path d="m64 53 7 7" stroke="url(#logoGlow)" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="boot-text">正在载入 PicDup…</div>
+  </div>
+
+  <div id="app" class="app" hidden>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="0" y="0" width="48" height="48" rx="14" fill="url(#logoGradient)"/>
+            <path d="M13 18a3 3 0 0 1 3-3h10l3 3h4a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3Z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/>
+            <circle cx="28" cy="24" r="4" fill="none" stroke="#fff" stroke-width="2.2"/>
+            <path d="m31 27 3.5 3.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M35 10.5 36 13l2.5 1-2.5 1-1 2.5-1-2.5L31.5 14l2.5-1Z" fill="#fff" opacity=".9"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-name">PicDup</div>
+          <div class="brand-sub">图片去重与清理</div>
+        </div>
+        <span class="version-pill" id="version-pill">v1.0</span>
+      </div>
+
+      <nav class="nav" aria-label="主导航">
+        <button class="nav-item" data-nav="home" type="button">
+          <svg class="icon"><use href="#i-layers"/></svg><span>开始扫描</span>
+        </button>
+        <button class="nav-item" data-nav="results" type="button">
+          <svg class="icon"><use href="#i-grid"/></svg><span>扫描结果</span>
+          <span class="nav-badge" id="nav-results-badge" hidden>0</span>
+        </button>
+        <button class="nav-item" data-nav="trash" type="button">
+          <svg class="icon"><use href="#i-trash"/></svg><span>隔离区</span>
+          <span class="nav-badge" id="nav-trash-badge" hidden>0</span>
+        </button>
+        <button class="nav-item" data-nav="settings" type="button">
+          <svg class="icon"><use href="#i-settings"/></svg><span>设置</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+
+      <div class="side-footer">
+        <div class="privacy-note">
+          <svg class="icon"><use href="#i-shield"/></svg>
+          <span>所有处理均在本机完成</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="crumb" id="crumb">开始扫描</h1>
+          <div class="topbar-sub" id="topbar-sub">一次扫描一个文件夹，所有处理都在本机完成</div>
+        </div>
+        <div class="topbar-actions">
+          <div class="topbar-view-actions" id="topbar-view-actions"></div>
+          <div class="status-pill" id="scan-status-pill" hidden>
+            <span class="status-dot"></span><span id="scan-status-text">扫描中</span>
+          </div>
+          <button class="icon-btn" id="btn-theme" type="button" title="切换主题" aria-label="切换主题" data-action="theme-toggle">
+            <svg class="icon"><use href="#i-moon"/></svg>
+          </button>
+          <button class="icon-btn" id="btn-help" type="button" title="快捷键与说明" aria-label="快捷键与说明" data-action="help">
+            <svg class="icon"><use href="#i-info"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="view-wrap" id="view-wrap" data-file-drop-target="true"></div>
+    </main>
+  </div>
+
+  <div id="overlay-root"></div>
+  <div id="toast-root" class="toast-root" aria-live="polite" aria-atomic="false"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

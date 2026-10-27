@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; padding: 0; width: 1024px; height: 1024px; background: transparent; overflow: hidden; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101a30"/>
+      <stop offset="0.55" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#080d18"/>
+    </linearGradient>
+    <radialGradient id="glowViolet" cx="0.18" cy="0.12" r="0.8">
+      <stop offset="0" stop-color="#8b5cf6" stop-opacity="0.5"/>
+      <stop offset="0.55" stop-color="#8b5cf6" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowCyan" cx="0.88" cy="0.9" r="0.75">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.35"/>
+      <stop offset="0.6" stop-color="#22d3ee" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lensRing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c4b5fd"/>
+      <stop offset="0.45" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="handle" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#0891b2"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#6d28d9"/>
+      <stop offset="0.5" stop-color="#4338ca"/>
+      <stop offset="1" stop-color="#0e7490"/>
+    </linearGradient>
+    <linearGradient id="mountainBack" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c4b5fd"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="mountainFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="1" stop-color="#0e7490"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="0.45" stop-color="#67e8f9" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#8b5cf6" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="sparkle" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9d5ff"/>
+      <stop offset="1" stop-color="#67e8f9"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="26" stdDeviation="30" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+    <filter id="lensGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="round">
+      <rect x="0" y="0" width="1024" height="1024" rx="224" ry="224"/>
+    </clipPath>
+    <clipPath id="photoClip">
+      <rect x="300" y="372" width="470" height="344" rx="26"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#round)">
+    <rect width="1024" height="1024" fill="url(#bg)"/>
+    <rect width="1024" height="1024" fill="url(#glowViolet)"/>
+    <rect width="1024" height="1024" fill="url(#glowCyan)"/>
+
+    <!-- faint grid -->
+    <g opacity="0.16" stroke="#94a3b8" stroke-width="1.2">
+      <path d="M0 256h1024M0 512h1024M0 768h1024M256 0v1024M512 0v1024M768 0v1024"/>
+    </g>
+
+    <!-- back photo cards -->
+    <g filter="url(#shadow)">
+      <rect x="232" y="288" width="472" height="338" rx="30" fill="#16213a" stroke="#334155" stroke-width="3"
+            transform="rotate(-11 468 457)"/>
+      <rect x="278" y="320" width="472" height="338" rx="30" fill="#1b2742" stroke="#475569" stroke-width="3"
+            transform="rotate(6 514 489)"/>
+    </g>
+
+    <!-- front photo -->
+    <g filter="url(#shadow)" transform="rotate(-2 535 544)">
+      <rect x="300" y="372" width="470" height="344" rx="28" fill="#0f172a" stroke="#64748b" stroke-width="4"/>
+      <g clip-path="url(#photoClip)">
+        <rect x="300" y="372" width="470" height="344" fill="url(#sky)"/>
+        <circle cx="646" cy="464" r="52" fill="#fde68a" opacity="0.95"/>
+        <circle cx="646" cy="464" r="82" fill="#fbbf24" opacity="0.12"/>
+        <path d="M300 640 L432 468 L530 592 L604 510 L770 660 L770 716 L300 716Z" fill="url(#mountainBack)" opacity="0.92"/>
+        <path d="M300 684 L388 588 L472 660 L560 556 L700 692 L770 652 L770 716 L300 716Z" fill="url(#mountainFront)"/>
+        <path d="M300 684 L388 588 L472 660 L560 556 L700 692" fill="none" stroke="#a5f3fc" stroke-width="3" opacity="0.5"/>
+        <rect x="300" y="372" width="470" height="344" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+      </g>
+    </g>
+
+    <!-- magnifier lens -->
+    <g filter="url(#lensGlow)">
+      <circle cx="640" cy="590" r="158" fill="url(#glass)" stroke="url(#lensRing)" stroke-width="34"/>
+      <circle cx="640" cy="590" r="141" fill="none" stroke="#ffffff" stroke-opacity="0.22" stroke-width="2"/>
+      <path d="M556 474 A120 120 0 0 1 716 492" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="13" stroke-linecap="round"/>
+      <path d="M759 709 L858 808" stroke="url(#handle)" stroke-width="52" stroke-linecap="round"/>
+      <path d="M770 720 L850 800" stroke="#ffffff" stroke-opacity="0.25" stroke-width="12" stroke-linecap="round"/>
+    </g>
+
+    <!-- sparkle -->
+    <g transform="translate(800 268)">
+      <path d="M0 -58 L13 -13 L58 0 L13 13 L0 58 L-13 13 L-58 0 L-13 -13Z" fill="url(#sparkle)"/>
+      <circle cx="-66" cy="46" r="7" fill="#67e8f9" opacity="0.85"/>
+      <circle cx="54" cy="-54" r="5" fill="#c4b5fd" opacity="0.8"/>
+    </g>
+
+    <!-- subtle inner border -->
+    <rect x="5" y="5" width="1014" height="1014" rx="220" fill="none" stroke="#ffffff" stroke-opacity="0.1" stroke-width="6"/>
+  </g>
+</svg>
+</body>
+</html>
